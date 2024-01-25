@@ -7,19 +7,39 @@ srctree := .
 objtree := .
 export srctree objtree
 
-# Set libs
+custom_c_flag := 
+custom_cpp_flag := 
+custom_af_flag :=
+custom_ld_flag :=
+custom_ar_flag :=
+
+# Set build libs
 libs-y :=
 libs-y += src/
 libs-y := $(sort $(libs-y))
 libs   = $(patsubst %/, %/built-in.o, $(libs-y))
 libs-dirs = $(patsubst %/, %, $(filter %/, $(libs-y)))
 
-# Set lib gcc
-libgcc := 
+# Set inc headers
+inch :=
+inch += inc/
+inch := $(sort $(inch))
+inch := $(foreach inc,$(inch),-I$(inc))
 
-# Set inc gcc
-incgcc := 
-incgcc += -Iinc
+# Set inc libs
+incl := 
+incl += lib/
+incl := $(sort $(incl))
+incl := $(foreach inc,$(incl),-L$(inc))
+
+# Set use libs
+uselibs := 
+uselibs += 
+uselibs := $(sort $(uselibs))
+uselibs := $(foreach lib,$(uselibs),-l$(lib))
+
+custom_c_flag += $(inch) $(incl) $(uselibs)
+custom_cpp_flag += $(inch) $(incl) $(uselibs)
 
 scripts/Kbuild.include: ;
 include scripts/Kbuild.include
@@ -39,11 +59,11 @@ OBJDUMP		= $(CROSS_COMPILE)objdump
 export CROSS_COMPILE AS LD CC CPP AR NM LDR STRIP OBJCOPY OBJDUMP
 
 # Set compiler
-KBUILD_CFLAGS 	:= -Wall -Wextra -fPIC $(incgcc)
-KBUILD_CPPFLAGS := -E $(KBUILD_CFLAGS)
-KBUILD_AFLAGS 	:= 
-KBUILD_LDLAGS 	:= -L./lib
-KBUILD_ARFLAGS  :=
+KBUILD_CFLAGS 	:= -Wall -Wextra -fPIC $(custom_c_flag)
+KBUILD_CPPFLAGS := -E $(KBUILD_CFLAGS) $(custom_cpp_flag)
+KBUILD_AFLAGS 	:= $(custom_af_flag)
+KBUILD_LDLAGS 	:= -L./lib $(custom_ld_flag)
+KBUILD_ARFLAGS  := $(custom_ar_flag)
 export KBUILD_CFLAGS KBUILD_CPPFLAGS KBUILD_AFLAGS KBUILD_LDLAGS KBUILD_ARFLAGS
 
 cpp_flags := $(KBUILD_CPPFLAGS)
@@ -69,15 +89,6 @@ else
 	Q = @
 endif
 export quiet Q 
-
-ifeq ($(KBUILD_EXTMOD),)
-	build-dir  = $(patsubst %/,%,$(dir $@))
-	target-dir = $(dir $@)
-else
-	zap-slash=$(filter-out .,$(patsubst %/,%,$(dir $@)))
-	build-dir  = $(KBUILD_EXTMOD)$(if $(zap-slash),/$(zap-slash))
-	target-dir = $(if $(KBUILD_EXTMOD),$(dir $<),$(dir $@))
-endif
 
 PHONY += all
 all: $(project)

@@ -11,7 +11,7 @@ include $(kbuild-file)
 include scripts/Kbuild.include
 include scripts/Makefile.lib
 
-__clean_files := $(obj-y) $(obj)/built-in.o $(obj)/lib-$(lib-name).a
+__clean_files := $(obj-y) $(obj)/built-in.o $(obj)/lib$(lib-name).a
 
 PHONY := __clean
 __clean: 

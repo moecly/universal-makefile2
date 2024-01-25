@@ -7,9 +7,9 @@ srctree := .
 objtree := .
 export srctree objtree
 
-custom_c_flag := 
-custom_cpp_flag := 
-custom_af_flag :=
+custom_c_flag := -Wno-unused-variable -Wno-unused-function 
+custom_cpp_flag := -Wno-unused-variable -Wno-unused-function 
+custom_a_flag :=
 custom_ld_flag :=
 custom_ar_flag :=
 
@@ -49,7 +49,7 @@ CROSS_COMPILE :=
 AS		= $(CROSS_COMPILE)as
 LD		= $(CROSS_COMPILE)ld
 CC		= $(CROSS_COMPILE)gcc
-CPP		= $(CC) -E
+CPP		= $(CROSS_COMPILE)g++
 AR		= $(CROSS_COMPILE)ar
 NM		= $(CROSS_COMPILE)nm
 LDR		= $(CROSS_COMPILE)ldr
@@ -59,19 +59,19 @@ OBJDUMP		= $(CROSS_COMPILE)objdump
 export CROSS_COMPILE AS LD CC CPP AR NM LDR STRIP OBJCOPY OBJDUMP
 
 # Set compiler
-KBUILD_CFLAGS 	:= -Wno-unused-variable -Wno-unused-function -Wall -Wextra -fPIC $(custom_c_flag)
-KBUILD_CPPFLAGS := -E $(KBUILD_CFLAGS) $(custom_cpp_flag)
-KBUILD_AFLAGS 	:= $(custom_af_flag)
-KBUILD_LDLAGS 	:= -L./lib $(custom_ld_flag)
-KBUILD_ARFLAGS  := $(custom_ar_flag)
+KBUILD_CFLAGS 	:= -Wall -Wextra -fPIC $(custom_c_flag)
+KBUILD_CPPFLAGS := -Wall -Wextra -fPIC $(custom_cpp_flag)
+KBUILD_AFLAGS 	:= $(custom_a_flag)
+KBUILD_LDFLAGS 	:= $(custom_ld_flag)
+KBUILD_ARFLAGS  := cDPrsT$(custom_ar_flag)
 
-# These warnings generated too much noise in a regular build.
-KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
+export KBUILD_CFLAGS KBUILD_CPPFLAGS KBUILD_AFLAGS KBUILD_LDFLAGS KBUILD_ARFLAGS
 
-export KBUILD_CFLAGS KBUILD_CPPFLAGS KBUILD_AFLAGS KBUILD_LDLAGS KBUILD_ARFLAGS
-
-cpp_flags := $(KBUILD_CPPFLAGS)
 c_flags := $(KBUILD_CFLAGS)
+cpp_flags := $(KBUILD_CPPFLAGS)
+a_flags := $(KBUILD_AFLAGS)
+ld_flags := $(KBUILD_LDFLAGS)
+ar_flags := $(KBUILD_ARFLAGS)
 
 # If KBUILD_VERBOSE equals 0 then the above command will be hidden.
 # If KBUILD_VERBOSE equals 1 then the above command is displayed.
@@ -103,19 +103,19 @@ $(project): $(libs-dirs)
 $(libs-dirs): FORCE
 	$(Q)$(MAKE) $(build)=$@
 
-PHONY += clean-libs-dirs
-clean-libs-dirs: 
-	$(Q)$(MAKE) $(clean)=$(strip $(libs-dirs))
+PHONY += clean-libs
+clean-libs: 
+	$(Q)$(foreach dir, $(libs-dirs), $(MAKE) $(clean)=$(dir);)
 
 PHONY += clean-build
 clean-build: 
 	$(call cmd,clean_build)
 
 PHONY += clean
-clean: clean-libs-dirs clean-build
+clean: clean-libs clean-build
 
 quiet_cmd_build_obj = BUILD     $@
-cmd_build_obj = $(CC) -o $(project) $(libs) $(c_flags) 
+cmd_build_obj = $(CPP) -o $(project) $(libs) $(cpp_flags) 
 
 quiet_cmd_clean_build = CLEAN     $(project)
 cmd_clean_build = rm $(project) -f;

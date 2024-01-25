@@ -111,7 +111,7 @@ PHONY += clean
 clean: clean-libs-dirs clean-build
 
 quiet_cmd_build_obj = BUILD     $@
-cmd_build_obj = $(CC) $(c_flags) -o $(project) $(libs) 
+cmd_build_obj = $(CC) -o $(project) $(libs) $(c_flags) 
 
 quiet_cmd_clean_build = CLEAN     $(project)
 cmd_clean_build = rm $(project) -f;

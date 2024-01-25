@@ -59,11 +59,15 @@ OBJDUMP		= $(CROSS_COMPILE)objdump
 export CROSS_COMPILE AS LD CC CPP AR NM LDR STRIP OBJCOPY OBJDUMP
 
 # Set compiler
-KBUILD_CFLAGS 	:= -Wall -Wextra -fPIC $(custom_c_flag)
+KBUILD_CFLAGS 	:= -Wno-unused-variable -Wno-unused-function -Wall -Wextra -fPIC $(custom_c_flag)
 KBUILD_CPPFLAGS := -E $(KBUILD_CFLAGS) $(custom_cpp_flag)
 KBUILD_AFLAGS 	:= $(custom_af_flag)
 KBUILD_LDLAGS 	:= -L./lib $(custom_ld_flag)
 KBUILD_ARFLAGS  := $(custom_ar_flag)
+
+# These warnings generated too much noise in a regular build.
+KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
+
 export KBUILD_CFLAGS KBUILD_CPPFLAGS KBUILD_AFLAGS KBUILD_LDLAGS KBUILD_ARFLAGS
 
 cpp_flags := $(KBUILD_CPPFLAGS)

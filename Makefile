@@ -80,22 +80,30 @@ else
 endif
 
 PHONY += all
-all: compiler
+all: $(project)
 
-PHONY += compiler
-compiler: $(libs-dirs)
-	$(Q)$(CC) $(c_flags) -o $(project) $(libs) 
+$(project): $(libs-dirs)
+	$(call cmd,build_obj)
 
 $(libs-dirs): FORCE
 	$(Q)$(MAKE) $(build)=$@
 
-PHONY += clean
-clean:
-	$(call cmd,clean_files)
+PHONY += clean-libs-dirs
+clean-libs-dirs: 
+	$(Q)$(MAKE) $(clean)=$(strip $(libs-dirs))
 
-quiet_cmd_clean_files = CLEAN      $@
-cmd_clean_files = find -name *.o | xargs rm -rf; \
-	rm $(project) -rf;
+PHONY += clean-build
+clean-build: 
+	$(call cmd,clean_build)
+
+PHONY += clean
+clean: clean-libs-dirs clean-build
+
+quiet_cmd_build_obj = BUILD     $@
+cmd_build_obj = $(CC) $(c_flags) -o $(project) $(libs) 
+
+quiet_cmd_clean_build = CLEAN     $(project)
+cmd_clean_build = rm $(project) -f;
 
 PHONY += FORCE
 FORCE:

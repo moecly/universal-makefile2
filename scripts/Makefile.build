@@ -1,7 +1,8 @@
 src := $(obj)
 
-lib-y :=
 obj-y :=
+lib-y :=
+lib-name :=
 EXTRA_AFLAGS   :=
 EXTRA_CFLAGS   :=
 EXTRA_CPPFLAGS :=
@@ -18,41 +19,53 @@ include $(kbuild-file)
 include scripts/Kbuild.include
 include scripts/Makefile.lib
 
-ifndef obj
-$(warning kbuild: Makefile.build is included improperly)
-endif
-
 ifneq ($(strip $(lib-y) $(lib-)),)
-lib-target := $(obj)/lib.a
+lib-target := $(obj)/lib-$(lib-name).a
 endif
 
 ifneq ($(strip $(obj-y) $(obj-) $(lib-target)),)
 builtin-target := $(obj)/built-in.o
 endif
 
-cmd_cc_o_c = $(CC) $(c_flags) -c -o $@ $<
+__build: $(builtin-target) $(lib-target)
+	@:
 
 #
 # Rule to compile a set of .o files into one .o file
 #
 ifdef builtin-target
-quiet_cmd_link_o_target = AR      $@
+quiet_cmd_link_o_target = AR        $@
 # If the list of objects to link is empty, just create an empty built-in.o
-cmd_link_o_target = $(if $(strip $(obj-y)),\
-		      rm -f $@; $(AR) cDPrsT $@ $(filter $(obj-y), $^), \
-		      rm -f $@; $(AR) cDPrsT$(KBUILD_ARFLAGS) $@)
+cmd_link_o_target = rm -f $@; $(AR) cDPrsT$(KBUILD_ARFLAGS) $@ $(obj-y)
 
 $(builtin-target): $(obj-y) 
 	$(Q)$(call cmd,link_o_target)
 
-targets += $(builtin-target)
 endif # builtin-target
 
-quiet_cmd_cc_o_c = CC      $@
-cmd_cc_o_c = $(CC) $(c_flags) -c -o $@ $<
+#
+# Rule to compile a set of .o files into one .a file
+#
+ifdef lib-target
+quiet_cmd_link_l_target = AR        $@
+cmd_link_l_target = rm -f $@; $(AR) cDPrsT$(KBUILD_ARFLAGS) $@ $(lib-y)
+
+$(lib-target): $(lib-y)
+	$(call cmd,link_l_target)
+
+endif # lib-target
+
+quiet_cmd_cc_o_c = CC        $@
+cmd_cc_o_c 	     = $(CC) $(c_flags) -c -o $@ $<
 
 $(obj)/%.o: $(src)/%.c
-	$(Q)$(call cmd,cc_o_c)
+	$(call cmd,cc_o_c)
+
+quiet_cmd_as_o_S = AS        $@
+cmd_as_o_S       = $(CC) $(a_flags) -c -o $@ $<
+
+$(obj)/%.o: $(src)/%.S 
+	$(call cmd,as_o_S)
 
 PHONY := FORCE
 FORCE:

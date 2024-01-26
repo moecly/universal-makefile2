@@ -16,26 +16,22 @@ custom_ar_flag  :=
 # Set build libs
 libs-y    :=
 libs-y    += src/
-libs-y    := $(sort $(libs-y))
 libs      = $(patsubst %/, %/built-in.o, $(libs-y))
 libs-dirs = $(patsubst %/, %, $(filter %/, $(libs-y)))
 
 # Set inc headers
 inch :=
 inch += inc/
-inch := $(sort $(inch))
 inch := $(foreach inc,$(inch),-I$(inc))
 
 # Set inc libs
 incl := 
 incl += lib/
-incl := $(sort $(incl))
 incl := $(foreach inc,$(incl),-L$(inc))
 
 # Set use libs
 uselibs := 
 uselibs += 
-uselibs := $(sort $(uselibs))
 uselibs := $(foreach lib,$(uselibs),-l$(lib))
 
 custom_c_flag   += $(inch) $(incl) $(uselibs)

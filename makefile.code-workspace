@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"*.json": "cpp",
+			"*.ejs": "html",
+			"": "",
+			"iostream": "cpp"
+		},
+		"search.exclude": {
+			"**/*.o": true,
+			"**/*.su": true
+		},
+		"files.exclude": {
+			"**/*.o": true,
+			"**/*.su": true
+		}
+	}
+}

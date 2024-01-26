@@ -17,16 +17,16 @@
 @goto end
 
 :clean
-@bash mk.sh clean
+@make -j12 clean
 @goto end
 
 :make
-@bash mk.sh all
+@make -j12 all
 @goto end
 
 :rebuild
-@bash mk.sh clean 
-@bash mk.sh all
+@make -j12 clean 
+@make -j12 all
 @goto end
 
 :end

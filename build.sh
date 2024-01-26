@@ -2,17 +2,17 @@
 
 case "$1" in
     cl)
-        bash mk.sh clean
+        make -j12 clean
         ;;
     mk)
-        bash mk.sh all
+        make -j12 all
         ;;
     re)
-        bash mk.sh clean
-        bash mk.sh all
+        make -j12 clean
+        make -j12 all
         ;;
     "")
-        bash mk.sh all
+        make -j12 all
         ;;
     *)
         ;;

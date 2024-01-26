@@ -14,17 +14,19 @@
     @goto rebuild
 )
 
+@goto end
+
 :clean
-bash ./build.sh clean
+bash mk.sh clean
 @goto end
 
 :make
-bash ./build.sh all
+bash mk.sh all
 @goto end
 
 :rebuild
-bash ./build.sh clean 
-bash ./build.sh all
+bash mk.sh clean 
+bash mk.sh all
 @goto end
 
 :end

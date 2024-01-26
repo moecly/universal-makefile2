@@ -23,7 +23,7 @@ endif
 quiet_cmd_clean_files = CLEAN     $(obj)
 cmd_clean_files = \
 	rm -f $(__clean_files); \
-	find $(obj) -name "*.su" | xargs rm -f
+	find $(obj) -name *.su | xargs rm -f
 
 PHONY += FORCE
 FORCE:

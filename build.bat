@@ -17,16 +17,16 @@
 @goto end
 
 :clean
-bash mk.sh clean
+@bash mk.sh clean
 @goto end
 
 :make
-bash mk.sh all
+@bash mk.sh all
 @goto end
 
 :rebuild
-bash mk.sh clean 
-bash mk.sh all
+@bash mk.sh clean 
+@bash mk.sh all
 @goto end
 
 :end

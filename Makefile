@@ -122,13 +122,13 @@ PHONY += clean
 clean: clean-link-libs clean-libs clean-build
 
 quiet_cmd_link_libs = AR        $@
-cmd_link_libs 		= $(AR) $(ar_flags) -o lib$(project).a $(libs)
+cmd_link_libs 		= $(AR) $(ar_flags) -o $(project).o $(libs)
 
 quiet_cmd_build_obj = BUILD     $@
-cmd_build_obj 		= $(CPP) -o $(project) -L. -l$(project) $(cpp_flags) 
+cmd_build_obj 		= $(CPP) -o $(project) $(project).o $(cpp_flags) 
 
 quiet_cmd_clean_link_libs = CLEAN     link-libs
-cmd_clean_link_libs 	  = rm lib$(project).a -f;
+cmd_clean_link_libs 	  = rm $(project).o -f;
 
 quiet_cmd_clean_build = CLEAN     $(project)
 cmd_clean_build 	  = rm $(project) -f;

@@ -7,17 +7,17 @@ srctree := .
 objtree := .
 export srctree objtree
 
-custom_c_flag := -Wno-unused-variable -Wno-unused-function 
+custom_c_flag   := -Wno-unused-variable -Wno-unused-function 
 custom_cpp_flag := -Wno-unused-variable -Wno-unused-function 
-custom_a_flag :=
-custom_ld_flag :=
-custom_ar_flag :=
+custom_a_flag   :=
+custom_ld_flag  :=
+custom_ar_flag  :=
 
 # Set build libs
-libs-y :=
-libs-y += src/
-libs-y := $(sort $(libs-y))
-libs   = $(patsubst %/, %/built-in.o, $(libs-y))
+libs-y    :=
+libs-y    += src/
+libs-y    := $(sort $(libs-y))
+libs      = $(patsubst %/, %/built-in.o, $(libs-y))
 libs-dirs = $(patsubst %/, %, $(filter %/, $(libs-y)))
 
 # Set inc headers
@@ -38,7 +38,7 @@ uselibs +=
 uselibs := $(sort $(uselibs))
 uselibs := $(foreach lib,$(uselibs),-l$(lib))
 
-custom_c_flag += $(inch) $(incl) $(uselibs)
+custom_c_flag   += $(inch) $(incl) $(uselibs)
 custom_cpp_flag += $(inch) $(incl) $(uselibs)
 
 scripts/Kbuild.include: ;
@@ -46,16 +46,16 @@ include scripts/Kbuild.include
 
 # Make variables (CC, etc...)
 CROSS_COMPILE := 
-AS		= $(CROSS_COMPILE)as
-LD		= $(CROSS_COMPILE)ld
-CC		= $(CROSS_COMPILE)gcc
-CPP		= $(CROSS_COMPILE)g++
-AR		= $(CROSS_COMPILE)ar
-NM		= $(CROSS_COMPILE)nm
-LDR		= $(CROSS_COMPILE)ldr
-STRIP		= $(CROSS_COMPILE)strip
-OBJCOPY		= $(CROSS_COMPILE)objcopy
-OBJDUMP		= $(CROSS_COMPILE)objdump
+AS			  = $(CROSS_COMPILE)as
+LD			  = $(CROSS_COMPILE)ld
+CC			  = $(CROSS_COMPILE)gcc
+CPP			  = $(CROSS_COMPILE)g++
+AR			  = $(CROSS_COMPILE)ar
+NM			  = $(CROSS_COMPILE)nm
+LDR			  = $(CROSS_COMPILE)ldr
+STRIP		  = $(CROSS_COMPILE)strip
+OBJCOPY		  = $(CROSS_COMPILE)objcopy
+OBJDUMP		  = $(CROSS_COMPILE)objdump
 export CROSS_COMPILE AS LD CC CPP AR NM LDR STRIP OBJCOPY OBJDUMP
 
 # Set compiler
@@ -67,11 +67,11 @@ KBUILD_ARFLAGS  := cDPrsT$(custom_ar_flag)
 
 export KBUILD_CFLAGS KBUILD_CPPFLAGS KBUILD_AFLAGS KBUILD_LDFLAGS KBUILD_ARFLAGS
 
-c_flags := $(KBUILD_CFLAGS)
+c_flags   := $(KBUILD_CFLAGS)
 cpp_flags := $(KBUILD_CPPFLAGS)
-a_flags := $(KBUILD_AFLAGS)
-ld_flags := $(KBUILD_LDFLAGS)
-ar_flags := $(KBUILD_ARFLAGS)
+a_flags   := $(KBUILD_AFLAGS)
+ld_flags  := $(KBUILD_LDFLAGS)
+ar_flags  := $(KBUILD_ARFLAGS)
 
 # If KBUILD_VERBOSE equals 0 then the above command will be hidden.
 # If KBUILD_VERBOSE equals 1 then the above command is displayed.
@@ -115,10 +115,10 @@ PHONY += clean
 clean: clean-libs clean-build
 
 quiet_cmd_build_obj = BUILD     $@
-cmd_build_obj = $(CPP) -o $(project) $(libs) $(cpp_flags) 
+cmd_build_obj 		= $(CPP) -o $(project) $(libs) $(cpp_flags) 
 
 quiet_cmd_clean_build = CLEAN     $(project)
-cmd_clean_build = rm $(project) -f;
+cmd_clean_build 	  = rm $(project) -f;
 
 PHONY += FORCE
 FORCE:

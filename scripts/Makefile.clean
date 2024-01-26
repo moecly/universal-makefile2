@@ -1,10 +1,10 @@
-src := $(obj)
+src 	 := $(obj)
 
-obj-y :=
-lib-y :=
+obj-y 	 :=
+lib-y 	 :=
 lib-name :=
 
-kbuild-dir := $(src)
+kbuild-dir  := $(src)
 kbuild-file := $(if $(wildcard $(kbuild-dir)/Kbuild), $(kbuild-dir)/kbuild, $(kbuild-dir)/Makefile)
 include $(kbuild-file)
 

@@ -1,20 +1,20 @@
-src := $(obj)
+src 		   := $(obj)
 
-obj-y :=
-lib-y :=
-lib-name :=
+obj-y 		   :=
+lib-y 		   :=
+lib-name 	   :=
 EXTRA_AFLAGS   :=
 EXTRA_CFLAGS   :=
 EXTRA_CPPFLAGS :=
 EXTRA_LDFLAGS  :=
 EXTRA_ARFLAGS  :=
-asflags-y  :=
-ccflags-y  :=
-cppflags-y :=
-ldflags-y  :=
-arflags-y  :=
+asflags-y  	   :=
+ccflags-y      :=
+cppflags-y 	   :=
+ldflags-y  	   :=
+arflags-y  	   :=
 
-kbuild-dir := $(src)
+kbuild-dir  := $(src)
 kbuild-file := $(if $(wildcard $(kbuild-dir)/Kbuild), $(kbuild-dir)/kbuild, $(kbuild-dir)/Makefile)
 include $(kbuild-file)
 
@@ -38,7 +38,7 @@ __build: $(builtin-target) $(lib-target)
 ifdef builtin-target
 quiet_cmd_link_o_target = AR        $@
 # If the list of objects to link is empty, just create an empty built-in.o
-cmd_link_o_target = rm -f $@; $(AR) $(ar_flags) $@ $(obj-y)
+cmd_link_o_target 		= rm -f $@; $(AR) $(ar_flags) $@ $(obj-y)
 
 $(builtin-target): $(obj-y) 
 	$(Q)$(call cmd,link_o_target)
@@ -50,7 +50,7 @@ endif # builtin-target
 #
 ifdef lib-target
 quiet_cmd_link_l_target = AR        $@
-cmd_link_l_target = rm -f $@; $(AR) $(ar_flags) $@ $(lib-y)
+cmd_link_l_target 		= rm -f $@; $(AR) $(ar_flags) $@ $(lib-y)
 
 $(lib-target): $(lib-y)
 	$(call cmd,link_l_target)

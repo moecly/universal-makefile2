@@ -12,4 +12,3 @@ clean := -f $(srctree)/scripts/Makefile.clean obj
 
 cmd = $(if $(Q), $(Q)echo '  $($(quiet)cmd_$(1))'; $(call cmd_$(1)), $(call cmd_$(1)))
 
-

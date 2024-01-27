@@ -10,7 +10,10 @@ build := -f $(srctree)/scripts/Makefile.build obj
 # $(Q)$(MAKE) $(clean)=dir
 clean := -f $(srctree)/scripts/Makefile.clean obj
 
-save-and-run-cmd = echo '$^ := $(cmd_$(1))' > $(dir $@)/.$(notdir $@).cmd
-cmd = $(if $(Q), $(Q)echo '  $($(quiet)cmd_$(1))'; \
-    $(call save-and-run-cmd,$(1)), $(call save-and-run-cmd,$(1)))
+save-cmd = echo '$^ := $(cmd_$(1))' > $(dir $@).$(notdir $@).cmd
+
+cmd = \
+    @$(call save-cmd,$(1)); \
+    echo '  $($(quiet)cmd_$(1))'; \
+    $(call cmd_$(1))
 

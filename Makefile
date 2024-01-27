@@ -95,8 +95,10 @@ else
 endif
 export quiet Q 
 
+prepare: FORCE
+
 PHONY += all
-all: $(project)
+all: prepare $(project)
 
 $(project): $(libs-dirs)
 	$(call cmd,build_obj)

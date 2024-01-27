@@ -9,7 +9,9 @@
 			"*.json": "cpp",
 			"*.ejs": "html",
 			"": "",
-			"iostream": "cpp"
+			"iostream": "cpp",
+			"main.h": "c",
+			"stdio.h": "c"
 		},
 		"search.exclude": {
 			"**/*.o": true,

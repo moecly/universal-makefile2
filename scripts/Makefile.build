@@ -70,10 +70,16 @@ $(obj)/%.o: $(src)/%.cpp
 	$(call cmd,cpp_o_c)
 
 quiet_cmd_as_o_S = AS        $@
-cmd_as_o_S       = $(CC) $(a_flags) -c -o $@ $<
+cmd_as_o_S       = $(AS) $(a_flags) -c -o $@ $<
 
 $(obj)/%.o: $(src)/%.S 
 	$(call cmd,as_o_S)
+
+quiet_cmd_as_s_S = AS        $@
+cmd_as_s_S       = $(AS) $(a_flags) -c -o $@ $<
+
+$(obj)/%.s: $(src)/%.S 
+	$(call cmd,as_s_S)
 
 PHONY := FORCE
 FORCE:

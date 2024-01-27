@@ -114,7 +114,7 @@ clean-build:
 
 PHONY += clean
 clean: clean-libs clean-build
-	$(Q)rm .clean-build.cmd .__clean.cmd -f
+	$(Q)ls .*.cmd | xargs rm -f
 
 PHONY += distclean
 distclean: clean

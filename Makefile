@@ -13,29 +13,30 @@ custom_a_flag   :=
 custom_ld_flag  :=
 custom_ar_flag  :=
 
+# Set build head
+head-y :=
+head-y += src/main.o
+head   := $(head-y)
+
 # Set build libs
 libs-y    :=
 libs-y    += src/
-libs-y    := $(sort $(libs-y))
 libs      = $(patsubst %/, %/built-in.o, $(libs-y))
 libs-dirs = $(patsubst %/, %, $(filter %/, $(libs-y)))
 
 # Set inc headers
 inch :=
 inch += inc/
-inch := $(sort $(inch))
 inch := $(foreach inc,$(inch),-I$(inc))
 
 # Set inc libs
 incl := 
 incl += lib/
-incl := $(sort $(incl))
 incl := $(foreach inc,$(incl),-L$(inc))
 
 # Set use libs
 uselibs := 
 uselibs += 
-uselibs := $(sort $(uselibs))
 uselibs := $(foreach lib,$(uselibs),-l$(lib))
 
 custom_c_flag   += $(inch) $(incl) $(uselibs)
@@ -97,12 +98,8 @@ export quiet Q
 PHONY += all
 all: $(project)
 
-$(project): link-libs
+$(project): $(libs-dirs)
 	$(call cmd,build_obj)
-
-PHONY += link-libs
-link-libs: $(libs-dirs)
-	$(call cmd,link_libs)
 
 $(libs-dirs): FORCE
 	$(Q)$(MAKE) $(build)=$@
@@ -115,20 +112,11 @@ PHONY += clean-build
 clean-build: 
 	$(call cmd,clean_build)
 
-clean-link-libs:
-	$(call cmd,clean_link_libs)
-
 PHONY += clean
-clean: clean-link-libs clean-libs clean-build
-
-quiet_cmd_link_libs = AR        $@
-cmd_link_libs 		= $(AR) $(ar_flags) -o $(project).o $(libs)
+clean: clean-libs clean-build
 
 quiet_cmd_build_obj = BUILD     $@
-cmd_build_obj 		= $(CPP) -o $(project) $(project).o $(cpp_flags) 
-
-quiet_cmd_clean_link_libs = CLEAN     link-libs
-cmd_clean_link_libs 	  = rm $(project).o -f;
+cmd_build_obj 		= $(CPP) -o $(project) $(head) $(libs) $(cpp_flags) 
 
 quiet_cmd_clean_build = CLEAN     $(project)
 cmd_clean_build 	  = rm $(project) -f;

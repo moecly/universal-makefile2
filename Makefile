@@ -114,23 +114,23 @@ clean-build:
 
 PHONY += clean
 clean: clean-libs clean-build
-	$(Q)find $(obj) -name *.cmd | xargs rm -f; 
+	$(Q)rm .clean-build.cmd .__clean.cmd -f
 
 PHONY += distclean
 distclean: clean
 	$(call cmd,distclean)
-	$(Q)find -name *.cmd | xargs rm -f;
 
 quiet_cmd_build_obj = BUILD     $@
 cmd_build_obj 		= $(CPP) -o $(project) $(head) $(libs) $(cpp_flags) 
 
 quiet_cmd_clean_build = CLEAN     $(project)
-cmd_clean_build 	  = rm $(project) -f;
+cmd_clean_build 	  = rm $(project) .$(project).cmd -f;
 
 quiet_cmd_distclean = CLEAN     *.o *.su *.cmd
 cmd_distclean 	    = \
 	find -name *.o | xargs rm -f; \
-	find -name *.su | xargs rm -f
+	find -name *.su | xargs rm -f; \
+	find -name *.cmd | xargs rm -f
 
 PHONY += FORCE
 FORCE:

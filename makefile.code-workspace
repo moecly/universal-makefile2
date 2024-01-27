@@ -13,11 +13,13 @@
 		},
 		"search.exclude": {
 			"**/*.o": true,
-			"**/*.su": true
+			"**/*.su": true,
+			"**/*.cmd": true
 		},
 		"files.exclude": {
 			"**/*.o": true,
-			"**/*.su": true
+			"**/*.su": true,
+			"**/*.cmd": true
 		}
 	}
 }

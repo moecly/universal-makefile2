@@ -21,7 +21,7 @@ head   := $(head-y)
 # Set build libs
 libs-y    :=
 libs-y    += src/
-libs      = $(patsubst %/, %/built-in.o, $(libs-y))
+libs      := $(patsubst %/, %/built-in.o, $(libs-y))
 libs-dirs = $(patsubst %/, %, $(filter %/, $(libs-y)))
 
 # Set inc headers
@@ -130,7 +130,7 @@ cmd_clean_build 	  = rm $(project) -f;
 quiet_cmd_distclean = CLEAN     *.o *.su *.cmd
 cmd_distclean 	    = \
 	find -name *.o | xargs rm -f; \
-	find -name *.su | xargs rm -f; 
+	find -name *.su | xargs rm -f
 
 PHONY += FORCE
 FORCE:

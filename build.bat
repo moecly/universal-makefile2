@@ -17,16 +17,16 @@
 @goto end
 
 :clean
-@make -j12 clean
+@make -j18 clean
 @goto end
 
 :make
-@make -j12 all
+@make -j18 all
 @goto end
 
 :rebuild
-@make -j12 clean 
-@make -j12 all
+@make -j18 clean 
+@make -j18 all
 @goto end
 
 :end

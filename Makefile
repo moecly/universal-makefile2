@@ -7,8 +7,8 @@ srctree := .
 objtree := .
 export srctree objtree
 
-custom_c_flag   := -Wno-unused-variable -Wno-unused-function 
-custom_cpp_flag := -Wno-unused-variable -Wno-unused-function 
+custom_c_flag   := -Wno-unused-variable -Wno-unused-function -fstack-usage -Wall -Wextra -fPIC 
+custom_cpp_flag := -Wno-unused-variable -Wno-unused-function -fstack-usage -Wall -Wextra -fPIC
 custom_a_flag   :=
 custom_ld_flag  :=
 custom_ar_flag  :=
@@ -60,8 +60,8 @@ OBJDUMP		  = $(CROSS_COMPILE)objdump
 export CROSS_COMPILE AS LD CC CPP AR NM LDR STRIP OBJCOPY OBJDUMP
 
 # Set compiler
-KBUILD_CFLAGS 	:= -fstack-usage -Wall -Wextra -fPIC $(custom_c_flag)
-KBUILD_CPPFLAGS := -fstack-usage -Wall -Wextra -fPIC $(custom_cpp_flag)
+KBUILD_CFLAGS 	:= $(custom_c_flag)
+KBUILD_CPPFLAGS := $(custom_cpp_flag)
 KBUILD_AFLAGS 	:= $(custom_a_flag)
 KBUILD_LDFLAGS 	:= $(custom_ld_flag)
 KBUILD_ARFLAGS  := cDPrsT$(custom_ar_flag)

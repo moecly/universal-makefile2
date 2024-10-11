@@ -75,6 +75,12 @@ cmd_as_o_S       = $(AS) $(a_flags) -c -o $@ $<
 $(obj)/%.o: $(src)/%.S 
 	$(call cmd,as_o_S)
 
+quiet_cmd_as_o_s = AS        $@
+cmd_as_o_s       = $(AS) $(a_flags) -c -o $@ $<
+
+$(obj)/%.o: $(src)/%.s 
+	$(call cmd,as_o_s)
+
 quiet_cmd_as_s_S = AS        $@
 cmd_as_s_S       = $(AS) $(a_flags) -c -o $@ $<
 
